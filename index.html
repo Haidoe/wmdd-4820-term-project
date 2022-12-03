@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Final Exam</title>
+        <link rel="stylesheet" href="css/styles.css">
+        <script src="js/main.js" defer></script>
+    </head>
+
+    <body>
+        <div class="heading-block">
+            <h1>Final Exam Introduction Block</h1>
+            <h2>The concept here is a "Scheduled Movie Streaming Management System"</h2>
+            <h3>Elements being tested are:</h3>
+            <ul>
+                <li>Objects,</li>
+                <li>Arrays,</li>
+                <li>Functions,</li>
+                <li>Selection,</li>
+                <li>Full-Scope Variables,</li>
+                <li>Booleans, and</li>
+                <li>API Processing</li>
+                <li>Critical and Procedural Thinking</li>
+            </ul>
+            <h3>The first thing that needs to be done is to use your TMDB API Account to pull a list of the top trending movies and preload the movie array (more instructions, as well as Object Structure, are provided in the JS file)</h3>
+        </div>
+        <div class="wrapper-parent">
+            <div class="children child1">
+                <h1>Create an Array of Movies, Showtimes and Prices</h1>
+                <p>In this section we'll:</p>
+                <ul>
+                    <li>There are Instructions within the JS File that you need to Pay attention to</li>
+                    <li>add Unlimited Movies</li>
+                    <li>add Seperate Showtimes for each Movie</li>
+                    <li>add Price for each Movie at the specified Showtime</li>
+                </ul>
+                <p>The idea here is to add 1 Movie-Showtime-Price Object for each showing of a particular movie and push it into a Movie Array - for example:<br>
+                    (Note - take time as an Integer...no need for AM/PM, can use 24hr clock; Expect decimals for price)
+                </p>
+                <ul>
+                    <li>Love Actually - 11am - 4.99</li>
+                    <li>Love Actually - 2pm - 6.99</li>
+                    <li>Love Actually - 5pm - 8.99</li>
+                    <li>Love Actually - 8pm - 11.99</li>
+                    <li>Notting Hill - 11am - 4.99</li>
+                    <li>etc...</li>
+                </ul>
+
+                <hr>
+                
+                <div class="c1-parent">
+                    <label class="c1-children" for="c1Movie">Please Enter the Movie Name:</label>
+                    <input class="c1-children" type="text" id="c1Movie">
+                    <label class="c1-children" for="c1Time">Please Enter the Showtime:<br>(1, 3, 5, etc...whole numbers)</label>
+                    <input class="c1-children" type="text" id="c1Time">
+                    <label class="c1-children" for="c1Price">Please Enter the Admission Price:</label>
+                    <input class="c1-children" type="text" id="c1Price">
+                </div>
+                <button id='addMovie'>Add Movie Information</button>
+                <p id="c1Output"></p>
+            </div>
+            <div class="children child2">
+                <h1>Preview Available Movies and Showtimes</h1>
+                <p>In this section we'll:</p>
+                <ul>
+                    <li>There are Instructions within the JS File that you need to Pay attention to</li>
+                    <li>Navigate through the Array by setting and tracking just the index (no for loop necessary - just manage the state of the current index)</li>
+                    <li>The "load" button should load array index 0 and always load 0 into the U/I and set the current state to 0</li>
+                    <li>The "load" button should also enable the "next", "prev" and "pickMovie" buttons (it's open book, you can look up how to do this in js - it takes about 5 seconds)</li>
+                    <li>The "next" and "prev" buttons will update the U/I with the appropriate Object information stored in that Array Element)</li>
+                    <li>The limits of the state will be determined by the length of the Array (don't assume the Array will remain constant)</li>
+                    <li>The "pickMovie" button should take the currently displayed movie information and populate fields for the next section</li>
+                </ul>
+
+                <hr>
+
+                <button id="load">Load First Movie</button>
+                <div class="c2-parent">
+                    <button id="prev" disabled>&lt;&lt; Previous</button>
+                    <button id="next" disabled>Next &gt;&gt;</button>
+                    <label class="c2-children" for="c2Movie">Movie:</label>
+                    <input class="c2-children" readonly type="text" id="c2Movie">
+                    <label class="c2-children" for="c2Time">Showtime:</label>
+                    <input class="c2-children" readonly type="text" id="c2Time">
+                    <label class="c2-children" for="c2Price">Price:</label>
+                    <input class="c2-children" readonly type="text" id="c2Price">
+                    <button id="pickMovie" disabled>Pick This Movie</button>
+                </div>
+            </div>
+            <div class="children child3">
+                <h1>Purchase Movie Tickets</h1>
+                <p>In this section we'll:</p>
+                <ul>
+                    <li>There are Instructions within the JS File that you need to Pay attention to</li>
+                    <li>The "pickMovie" button should have already taken the current movie information and populate fields for this section</li>
+                    <li>The "pickMovie" button should also have already captured the Ticket Pricing information for you to use in your calculation</li>
+                    <li>Program the "calcTotal" Event Listener to get the Number of Tickets from the UI</li>
+                    <li>Calculate the total cost and display a user-friendly response as feedback to the user regarding their purchase</li>
+                </ul>
+
+                <hr>
+
+                <div class="c3-parent">
+                    <label class="c3-children" for="c3Movie">Enter Movie Name:</label>
+                    <input class="c3-children" readonly type="text" id="c3Movie">
+                    <label class="c3-children" for="c3Time">Enter Movie Time:</label>
+                    <input class="c3-children" readonly type="text" id="c3Time">
+                    <label class="c3-children" for="c3NumTickets">Enter the Number of Tickets:</label>
+                    <input class="c3-children" type="text" id="c3NumTickets">
+                    <label class="c3-children c3-output" for="c3Total">Amount Due (Including tax):</label>
+                    <input class="c3-children c3-output" readonly type="text" id="c3Total">
+                    <button id="calcTotal">Calculate Total</button>
+                </div>
+                <p id="c3Output"></p>
+            </div>
+        </div>
+    </body>
+
+</html>

@@ -1,0 +1,54 @@
+.heading-block {
+    background: lightskyblue;
+    padding: 60px;
+}
+
+.heading-block h1 {
+    color: blue;
+    text-align: center;
+}
+
+.heading-block ul {
+    font-weight: bold;
+}
+
+.wrapper-parent {
+    width: 80%;
+    margin: 0 auto;
+    display: grid;
+    height: 80vh;
+    padding: 10px;
+}
+
+.children {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: lightcyan;
+}
+
+.c1-parent, .c2-parent, .c3-parent {
+    display: grid;
+    grid-template-columns: 200px 275px;
+    margin-left: 30px;
+    margin-bottom: 40px;
+}
+
+label {
+    text-align: right;
+    padding-right: 5px;
+}
+
+.c1-children, .c2-children, .c3-children {
+    margin-top: 10px;
+}
+
+input.c2-children, input.c3-output {
+    border: none;
+    background-color: lightcyan;
+    border-bottom-style: groove;
+    padding: 3px;
+}
+
+button {
+    margin-top: 20px;
+}
