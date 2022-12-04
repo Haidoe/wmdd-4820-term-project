@@ -48,7 +48,11 @@
 let movieObjectsArray = [];
 let currentIndex = 0;
 let moviePrice = 0;
-const apiKey = "";
+
+//Usually this is something you want to put in .env
+const baseUrl = "https://api.themoviedb.org/3";
+const apiKey = "8d97d616c053720f58594b66af247d0c";
+const trendingMoviesUrl = `${baseUrl}/trending/movie/day?api_key=${apiKey}`;
 
 // ****************************************************************************
 //  Pull Movies from API and Load the Movie Array
@@ -70,8 +74,8 @@ const apiKey = "";
 //      option 2: Load movie and times via a switch statement - max 90% for section
 //      option 3: Load movie and times via an if-statement - max 80% for section
 //
-//      For example: 
-//          if you get 8/10 on the section and you implemented option 1 you get 8 marks 
+//      For example:
+//          if you get 8/10 on the section and you implemented option 1 you get 8 marks
 //          if you get 8/10 on the section and you implemented option 2 you get 7 marks
 //          if you get 8/10 on the section and you implemented option 3 you get 6.5 marks
 //
@@ -81,25 +85,24 @@ const apiKey = "";
 //              showtime: showtime,
 //              price: price
 //          }
-// 
+//
 // ****************************************************************************
 // Populate the Movie Table - 10 marks
-getMovies();
+getMovies(trendingMoviesUrl);
 
 async function getMovies(url) {
+  try {
     const res = await fetch(url);
-    const data = await res.json()
-
-    console.log(data.results);
-};
-
-    
-
+    const data = await res.json();
+    movieObjectsArray = data;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 // ****************************************************************************
 // ****************************************************************************
 //  Function Variables
-
 
 // ****************************************************************************
 // ****************************************************************************
@@ -107,35 +110,23 @@ async function getMovies(url) {
 // ****************************************************************************
 // ****************************************************************************
 //  Load Movie Array - 10 marks
-addMovie.addEventListener('click', () => {
-    
-})
+addMovie.addEventListener("click", () => {});
 
 // ****************************************************************************
 // ****************************************************************************
 //  View the Available Movies - 5 marks
-load.addEventListener('click', () => {
-    
-})
+load.addEventListener("click", () => {});
 
 // ****************************************************************************
 // ****************************************************************************
 //  Navigate through the Showtimes - 5 marks each (so 15 marks for this section)
-next.addEventListener('click', () => {
-    
-})
+next.addEventListener("click", () => {});
 
-prev.addEventListener('click', () => {
-    
-})
+prev.addEventListener("click", () => {});
 
-pickMovie.addEventListener('click', () => {
-    
-})
+pickMovie.addEventListener("click", () => {});
 
 // ****************************************************************************
 // ****************************************************************************
 //  Calculate Ticket Price - 10 marks
-calcTotal.addEventListener('click', () => {
-    
-})
+calcTotal.addEventListener("click", () => {});
