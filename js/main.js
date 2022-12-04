@@ -46,6 +46,10 @@
 // ****************************************************************************
 //  Full-Scope Variables
 let movieObjectsArray = [];
+let customMovieArray = [];
+//Combination of movieObjectsArray && customMovieArray
+let allMovieArray = [];
+
 let currentIndex = 0;
 let moviePrice = 0;
 
@@ -133,7 +137,7 @@ async function getMovies(url) {
         }
       }
 
-      console.log(movieObjectsArray);
+      mergeMovieArrays();
     }
   } catch (error) {
     console.log(error);
@@ -150,6 +154,12 @@ function addMovieWithSchedule({ title }, showtime) {
     showtime,
     price: prices[showtime],
   });
+}
+
+//Merge the Movies from TMDB and Custom Movies From User Input
+function mergeMovieArrays(params) {
+  allMovieArray = [...customMovieArray, ...movieObjectsArray];
+  console.log("UPDATED MOVIE ARRAY", allMovieArray);
 }
 
 //Concatinating am/pm
@@ -280,11 +290,14 @@ addMovie.addEventListener("click", () => {
       price,
     };
 
-    //Add the movie in the first index of the array
-    movieObjectsArray = [customMovie, ...movieObjectsArray];
+    //Add to customMovieArray
+    customMovieArray.push(customMovie);
 
-    console.log(customMovie);
-    console.log(movieObjectsArray);
+    //Combine the movieObjectsArray
+    mergeMovieArrays();
+
+    //Success message
+    c1Output.innerHTML = `Movie added. There are ${allMovieArray.length} movies available.`;
 
     //Reset the inputs
     c1Movie.value = "";
