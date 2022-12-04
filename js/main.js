@@ -54,6 +54,13 @@ const baseUrl = "https://api.themoviedb.org/3";
 const apiKey = "8d97d616c053720f58594b66af247d0c";
 const trendingMoviesUrl = `${baseUrl}/trending/movie/day?api_key=${apiKey}`;
 
+const prices = {
+  "11am": 4.99,
+  "2pm": 6.99,
+  "5pm": 8.99,
+  "8pm": 11.99,
+};
+
 // ****************************************************************************
 //  Pull Movies from API and Load the Movie Array
 //
@@ -94,7 +101,40 @@ async function getMovies(url) {
   try {
     const res = await fetch(url);
     const data = await res.json();
-    movieObjectsArray = data;
+
+    console.log("MOVIES FROM TMDB API", data.results);
+
+    if (data.results.length) {
+      //Removing 3 and below
+      let movies = data.results.filter(
+        (item) => Math.floor(item.vote_average) > 3
+      );
+
+      //Switch Fallthrough
+      for (const movie of movies) {
+        const rating = movie.vote_average;
+
+        switch (Boolean(rating)) {
+          case rating >= 8: {
+            addMovieWithSchedule(movie, "8pm");
+          }
+
+          case rating >= 7: {
+            addMovieWithSchedule(movie, "5pm");
+          }
+
+          case rating >= 6: {
+            addMovieWithSchedule(movie, "2pm");
+          }
+
+          case rating >= 4: {
+            addMovieWithSchedule(movie, "11am");
+          }
+        }
+      }
+
+      console.log(movieObjectsArray);
+    }
   } catch (error) {
     console.log(error);
   }
@@ -104,13 +144,156 @@ async function getMovies(url) {
 // ****************************************************************************
 //  Function Variables
 
+function addMovieWithSchedule({ title }, showtime) {
+  movieObjectsArray.push({
+    title,
+    showtime,
+    price: prices[showtime],
+  });
+}
+
+//Concatinating am/pm
+function convertIntegerToTime(showtime) {
+  if (showtime === 0) {
+    return "12am";
+  } else if (showtime > 0 && showtime < 12) {
+    return `${showtime}am`;
+  } else if (showtime === 12) {
+    return "12pm";
+  } else {
+    return `${showtime - 12}pm`;
+  }
+}
+
+//display error message
+function showErrorMessage(node, message, output) {
+  node.style.borderColor = "red";
+  output.innerHTML = message;
+  output.style.color = "red";
+}
+
+const resetInputBorder = (node) => () => {
+  node.style.borderColor = "";
+};
+
 // ****************************************************************************
 // ****************************************************************************
 //      Event Listeners
 // ****************************************************************************
 // ****************************************************************************
 //  Load Movie Array - 10 marks
-addMovie.addEventListener("click", () => {});
+
+//Resets Border Color
+c1Movie.addEventListener("input", resetInputBorder(c1Movie));
+c1Time.addEventListener("input", resetInputBorder(c1Time));
+c1Price.addEventListener("input", resetInputBorder(c1Price));
+
+addMovie.addEventListener("click", () => {
+  //Reset Style
+  c1Movie.style.borderColor = "";
+  c1Time.style.borderColor = "";
+  c1Price.style.borderColor = "";
+  c1Output.innerHTML = "";
+  c1Output.style.color = "#000";
+
+  try {
+    //Removing the excess whitespaces.
+    const title = c1Movie.value.trim();
+
+    //Check if the movie title has a value
+    if (!title) {
+      throw {
+        node: c1Movie,
+        message: "Movie title is required.",
+      };
+    }
+
+    let showtime = c1Time.value;
+
+    //Check if the showtimes has a value
+    if (!showtime) {
+      throw {
+        node: c1Time,
+        message: "Showtime is required.",
+      };
+    }
+
+    //Convert to Number
+    showtime = Number(c1Time.value);
+
+    //Must be a valid number
+    if (isNaN(showtime)) {
+      throw {
+        node: c1Time,
+        message: "Showtime is not a valid number.",
+      };
+    }
+
+    //Must be a whole number
+    if (showtime % 1 !== 0) {
+      throw {
+        node: c1Time,
+        message: "Showtime must be a whole number ranging 0-23.",
+      };
+    }
+
+    //Must only accepts 0 - 23
+    if (Math.floor(showtime) < 0 || Math.floor(showtime) >= 24) {
+      throw {
+        node: c1Time,
+        message: "Showtime must be a whole number ranging 0-23.",
+      };
+    }
+
+    let price = c1Price.value;
+
+    //Check if the price has a value
+    if (!price.length) {
+      throw {
+        node: c1Price,
+        message: "Price is required.",
+      };
+    }
+
+    //Must be a number
+    price = Number(c1Price.value);
+
+    //Must be a valid number
+    if (isNaN(price)) {
+      throw {
+        node: c1Price,
+        message: "Price must be a valid number.",
+      };
+    }
+
+    //Must be greater than 0
+    if (price <= 0) {
+      throw {
+        node: c1Price,
+        message: "Price must be greater than 0",
+      };
+    }
+
+    const customMovie = {
+      title,
+      showtime: convertIntegerToTime(showtime),
+      price,
+    };
+
+    //Add the movie in the first index of the array
+    movieObjectsArray = [customMovie, ...movieObjectsArray];
+
+    console.log(customMovie);
+    console.log(movieObjectsArray);
+
+    //Reset the inputs
+    c1Movie.value = "";
+    c1Price.value = "";
+    c1Time.value = "";
+  } catch (error) {
+    showErrorMessage(error.node, error.message, c1Output);
+  }
+});
 
 // ****************************************************************************
 // ****************************************************************************
