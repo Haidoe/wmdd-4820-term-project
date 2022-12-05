@@ -46,10 +46,6 @@
 // ****************************************************************************
 //  Full-Scope Variables
 let movieObjectsArray = [];
-let customMovieArray = [];
-//Combination of movieObjectsArray && customMovieArray
-let allMovieArray = [];
-
 let currentIndex = 0;
 let moviePrice = 0;
 
@@ -137,7 +133,7 @@ async function getMovies(url) {
         }
       }
 
-      mergeMovieArrays();
+      console.log("MOVIES WITH SHOWTIMES", movieObjectsArray);
     }
   } catch (error) {
     console.log(error);
@@ -154,12 +150,6 @@ function addMovieWithSchedule({ title }, showtime) {
     showtime,
     price: prices[showtime],
   });
-}
-
-//Merge the Movies from TMDB and Custom Movies From User Input
-function mergeMovieArrays(params) {
-  allMovieArray = [...customMovieArray, ...movieObjectsArray];
-  console.log("UPDATED MOVIE ARRAY", allMovieArray);
 }
 
 //Concatinating am/pm
@@ -290,20 +280,17 @@ addMovie.addEventListener("click", () => {
       price,
     };
 
-    //Add to customMovieArray
-    customMovieArray.push(customMovie);
-
-    //Combine the movieObjectsArray
-    mergeMovieArrays();
+    movieObjectsArray.push(customMovie);
 
     //Success message
-    c1Output.innerHTML = `Movie added. There are ${allMovieArray.length} movies available.`;
+    c1Output.innerHTML = `Movie added. There are ${movieObjectsArray.length} movies available.`;
 
     //Reset the inputs
     c1Movie.value = "";
     c1Price.value = "";
     c1Time.value = "";
   } catch (error) {
+    console.log(error);
     showErrorMessage(error.node, error.message, c1Output);
   }
 });
@@ -311,14 +298,44 @@ addMovie.addEventListener("click", () => {
 // ****************************************************************************
 // ****************************************************************************
 //  View the Available Movies - 5 marks
-load.addEventListener("click", () => {});
+const loadMovie = (ctr) => {
+  const movie = movieObjectsArray[ctr];
+
+  c2Movie.value = movie.title;
+  c2Price.value = movie.price;
+  c2Time.value = movie.showtime;
+};
+
+load.addEventListener("click", () => {
+  loadMovie(0);
+
+  prev.disabled = false;
+  next.disabled = false;
+  pickMovie.disabled = false;
+});
 
 // ****************************************************************************
 // ****************************************************************************
 //  Navigate through the Showtimes - 5 marks each (so 15 marks for this section)
-next.addEventListener("click", () => {});
+next.addEventListener("click", () => {
+  currentIndex++;
 
-prev.addEventListener("click", () => {});
+  if (currentIndex >= movieObjectsArray.length) {
+    currentIndex = 0;
+  }
+
+  loadMovie(currentIndex);
+});
+
+prev.addEventListener("click", () => {
+  currentIndex--;
+
+  if (currentIndex < 0) {
+    currentIndex = movieObjectsArray.length - 1;
+  }
+
+  loadMovie(currentIndex);
+});
 
 pickMovie.addEventListener("click", () => {});
 
