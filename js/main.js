@@ -166,14 +166,25 @@ function convertIntegerToTime(showtime) {
 }
 
 //display error message
-function showErrorMessage(node, message, output) {
-  node.style.borderColor = "red";
+function showErrorMessage(message, output, inputNode = null) {
   output.innerHTML = message;
   output.style.color = "red";
+
+  if (inputNode) {
+    inputNode.style.borderColor = "red";
+  }
 }
 
 const resetInputBorder = (node) => () => {
   node.style.borderColor = "";
+};
+
+const loadMovie = (ctr) => {
+  const movie = movieObjectsArray[ctr];
+
+  c2Movie.value = movie.title;
+  c2Price.value = movie.price;
+  c2Time.value = movie.showtime;
 };
 
 // ****************************************************************************
@@ -290,22 +301,13 @@ addMovie.addEventListener("click", () => {
     c1Price.value = "";
     c1Time.value = "";
   } catch (error) {
-    console.log(error);
-    showErrorMessage(error.node, error.message, c1Output);
+    showErrorMessage(error.message, c1Output, error.node);
   }
 });
 
 // ****************************************************************************
 // ****************************************************************************
 //  View the Available Movies - 5 marks
-const loadMovie = (ctr) => {
-  const movie = movieObjectsArray[ctr];
-
-  c2Movie.value = movie.title;
-  c2Price.value = movie.price;
-  c2Time.value = movie.showtime;
-};
-
 load.addEventListener("click", () => {
   loadMovie(0);
 
@@ -337,9 +339,71 @@ prev.addEventListener("click", () => {
   loadMovie(currentIndex);
 });
 
-pickMovie.addEventListener("click", () => {});
+pickMovie.addEventListener("click", () => {
+  const movie = movieObjectsArray[currentIndex];
+
+  c3Movie.value = movie.title;
+  c3Time.value = movie.showtime;
+  moviePrice = movie.price;
+  c3NumTickets.value = "";
+  c3Output.innerHTML = "";
+  c3Total.value = "";
+});
 
 // ****************************************************************************
 // ****************************************************************************
 //  Calculate Ticket Price - 10 marks
-calcTotal.addEventListener("click", () => {});
+c3NumTickets.addEventListener("input", resetInputBorder(c3NumTickets));
+
+calcTotal.addEventListener("click", () => {
+  c3NumTickets.style.borderColor = "";
+  c3Output.innerHTML = "";
+  c3Output.style.color = "#000";
+
+  try {
+    if (!moviePrice) {
+      throw {
+        message: "Pick a movie first in the section 2.",
+        node: null,
+      };
+    }
+
+    let tickets = c3NumTickets.value;
+
+    if (!tickets) {
+      throw {
+        message: "Number of tickets input field is required.",
+        node: c3NumTickets,
+      };
+    }
+
+    tickets = Number(tickets);
+
+    if (isNaN(tickets)) {
+      throw {
+        message: "Number of tickets input field must be a valid whole number.",
+        node: c3NumTickets,
+      };
+    }
+
+    if (tickets % 1 !== 0) {
+      throw {
+        message: "Number of tickets input field must be a valid whole number",
+        node: c3NumTickets,
+      };
+    }
+
+    const total = moviePrice * tickets * 1.15;
+
+    c3Total.value = total.toFixed(2);
+
+    c3Output.innerHTML = `
+    ${tickets} tickets (@${moviePrice.toFixed(2)}) to watch 
+    <em>${c3Movie.value}</em> at <b>${c3Time.value}</b>.
+    Total bill is : <em>${total.toFixed(2)}</em>`;
+
+    c3NumTickets.value = "";
+  } catch (error) {
+    showErrorMessage(error.message, c3Output, error.node);
+  }
+});
