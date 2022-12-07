@@ -293,6 +293,8 @@ addMovie.addEventListener("click", () => {
 
     movieObjectsArray.push(customMovie);
 
+    console.log("UPDATED MOVIE LIST", movieObjectsArray);
+
     //Success message
     c1Output.innerHTML = `Movie added. There are ${movieObjectsArray.length} movies available.`;
 
@@ -309,6 +311,8 @@ addMovie.addEventListener("click", () => {
 // ****************************************************************************
 //  View the Available Movies - 5 marks
 load.addEventListener("click", () => {
+  currentIndex = 0;
+
   loadMovie(0);
 
   prev.disabled = false;
