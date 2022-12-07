@@ -352,6 +352,9 @@ pickMovie.addEventListener("click", () => {
   c3NumTickets.value = "";
   c3Output.innerHTML = "";
   c3Total.value = "";
+
+  //Better UX
+  c3Movie.focus();
 });
 
 // ****************************************************************************
